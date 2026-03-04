@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wish I Knew This Sooner — S.O.S Peer Mentors</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    min-height: 100vh;
+  }
+
+  h1.page-title {
+    color: #fff;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  p.page-subtitle {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    width: 390px;
+    height: 690px;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 390px;
+    height: 690px;
+    border-radius: 20px;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 30px;
+    color: #fff;
+    user-select: none;
+  }
+
+  .slide.active { display: flex; }
+
+  /* Slide backgrounds */
+  .slide-1 { background: linear-gradient(135deg, #0a1628, #1a3a6b, #0d2347); }
+  .slide-2 { background: linear-gradient(135deg, #c0392b, #e74c3c, #a93226); }
+  .slide-3 { background: linear-gradient(135deg, #1a3a6b, #2980b9, #1a5276); }
+  .slide-4 { background: linear-gradient(135deg, #d4a017, #f1c40f, #b7950b); color: #1a1a2e; }
+  .slide-5 { background: linear-gradient(135deg, #0d2347, #1a3a6b, #2471a3); }
+  .slide-6 { background: linear-gradient(135deg, #c0392b, #a93226, #922b21); }
+  .slide-7 { background: linear-gradient(135deg, #1a5276, #2980b9, #3498db); }
+  .slide-8 { background: linear-gradient(135deg, #0a1628, #1a3a6b, #c0392b); }
+
+  /* Decorative elements */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+
+  .slide::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  /* Title slide */
+  .slide-1 .logo {
+    width: 80px; height: 80px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 24px;
+    border: 3px solid rgba(255,255,255,0.3);
+    letter-spacing: -1px;
+  }
+
+  .slide-title {
+    font-size: 1.7rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .slide-title .highlight {
+    color: #f1c40f;
+    display: block;
+    font-size: 2.2rem;
+  }
+
+  .slide-subtitle {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Tip slides */
+  .tip-number {
+    font-size: 3.5rem;
+    font-weight: 900;
+    opacity: 0.15;
+    position: absolute;
+    top: 30px; left: 30px;
+    line-height: 1;
+  }
+
+  .tip-emoji {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tip-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    opacity: 0.7;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tip-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tip-detail {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    opacity: 0.85;
+    position: relative;
+    z-index: 1;
+    max-width: 320px;
+  }
+
+  .tip-mentor {
+    position: absolute;
+    bottom: 40px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    font-style: italic;
+    z-index: 1;
+  }
+
+  /* CTA slide */
+  .cta-box {
+    background: rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 24px 20px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .cta-box p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .cta-box .cta-date {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #f1c40f;
+  }
+
+  .cta-box .cta-email {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-top: 6px;
+  }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  .nav button {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.3); }
+  .nav button:disabled { opacity: 0.3; cursor: default; }
+
+  .dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .dot.active {
+    background: #f1c40f;
+    width: 24px;
+    border-radius: 4px;
+  }
+
+  .slide-counter {
+    color: #aaa;
+    font-size: 0.75rem;
+    margin-top: 10px;
+  }
+
+  .branding {
+    position: absolute;
+    bottom: 14px;
+    right: 20px;
+    font-size: 0.6rem;
+    opacity: 0.4;
+    z-index: 1;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .export-note {
+    color: #666;
+    font-size: 0.7rem;
+    margin-top: 24px;
+    text-align: center;
+    max-width: 390px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">Wish I Knew This Sooner</h1>
+<p class="page-subtitle">S.O.S Peer Mentors — Monmouth University School of Science</p>
+
+<div class="carousel-wrapper" id="carousel">
+  <!-- SLIDE 1: Title -->
+  <div class="slide slide-1 active">
+    <div class="logo">S.O.S</div>
+    <div class="slide-title">
+      Wish I Knew
+      <span class="highlight">This Sooner</span>
+    </div>
+    <p class="slide-subtitle">Real tips from S.O.S Peer Mentors<br>in the School of Science</p>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide slide-2">
+    <span class="tip-number">01</span>
+    <div class="tip-emoji">📅</div>
+    <div class="tip-label">Wish I Knew This Sooner</div>
+    <div class="tip-text">Take CS 205 (Data Structures) the semester right after CS 176.</div>
+    <div class="tip-detail">Almost every upper-level CS course needs it as a prerequisite. If you delay it, you'll be locked out of electives you actually want — like AI, Game Dev, or Cybersecurity.</div>
+    <span class="tip-mentor">— S.O.S Peer Mentor, CSSE Major</span>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide slide-3">
+    <span class="tip-number">02</span>
+    <div class="tip-emoji">🔬</div>
+    <div class="tip-label">Wish I Knew This Sooner</div>
+    <div class="tip-text">Start asking professors about research early — even as a sophomore.</div>
+    <div class="tip-detail">The School of Science pushes student-faculty research hard. Bio and Chem labs are always looking for undergrads. You don't need to be a genius — just show up and be curious. It looks incredible on grad school apps.</div>
+    <span class="tip-mentor">— S.O.S Peer Mentor, Biology Major</span>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide slide-4">
+    <span class="tip-number">03</span>
+    <div class="tip-emoji">🧮</div>
+    <div class="tip-label">Wish I Knew This Sooner</div>
+    <div class="tip-text">Don't sleep on the Math tutoring center — even if you think you're "fine."</div>
+    <div class="tip-detail">Calc II and Linear Algebra catch a lot of people off guard. The tutoring center is free, and the math peer tutors have literally taken the same classes with the same professors. Use them.</div>
+    <span class="tip-mentor">— S.O.S Peer Mentor, Math Major</span>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide slide-5">
+    <span class="tip-number">04</span>
+    <div class="tip-emoji">💼</div>
+    <div class="tip-label">Wish I Knew This Sooner</div>
+    <div class="tip-text">Check Handshake for campus jobs and internships — not just Google.</div>
+    <div class="tip-detail">Monmouth posts campus lab assistant jobs, IT help desk positions, and paid research gigs on Handshake that you won't find anywhere else. Set up alerts for "School of Science" and check weekly.</div>
+    <span class="tip-mentor">— S.O.S Peer Mentor, Chemistry Major</span>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide slide-6">
+    <span class="tip-number">05</span>
+    <div class="tip-emoji">🎯</div>
+    <div class="tip-label">Wish I Knew This Sooner</div>
+    <div class="tip-text">Pick your gen-eds strategically — they can double-count.</div>
+    <div class="tip-detail">Some gen-ed courses satisfy multiple requirements at once. Talk to your advisor before registering randomly. One smart pick can save you an entire semester's worth of credits.</div>
+    <span class="tip-mentor">— S.O.S Peer Mentor, CSSE Major</span>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide slide-7">
+    <span class="tip-number">06</span>
+    <div class="tip-emoji">🤝</div>
+    <div class="tip-label">Wish I Knew This Sooner</div>
+    <div class="tip-text">Join at least one club outside your major. Seriously.</div>
+    <div class="tip-detail">It's easy to get tunnel vision in science. But some of the best connections (and stress relief) come from clubs you'd never expect. Plus, employers and grad schools love seeing range.</div>
+    <span class="tip-mentor">— S.O.S Peer Mentor, Biology Major</span>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+
+  <!-- SLIDE 8: CTA -->
+  <div class="slide slide-8">
+    <div class="tip-emoji">🚀</div>
+    <div class="slide-title" style="font-size: 1.4rem;">
+      Want More Tips
+      <span class="highlight" style="font-size: 1.8rem;">In Person?</span>
+    </div>
+    <div class="cta-box">
+      <p>Join us at</p>
+      <p class="cta-date">Plan Your Next Move</p>
+      <p>March 9, 2026 · 4–5 PM · Room E201</p>
+      <p>Schedule planning, campus involvement,<br>snacks, and real advice.</p>
+      <p class="cta-email">sos.peermentor@monmouth.edu</p>
+    </div>
+    <p class="branding">S.O.S Peer Mentors</p>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prevBtn" onclick="changeSlide(-1)" disabled>‹</button>
+  <div class="dots" id="dots"></div>
+  <button id="nextBtn" onclick="changeSlide(1)">›</button>
+</div>
+<div class="slide-counter" id="counter">1 / 8</div>
+
+<p class="export-note">Tip: Screenshot each slide to use as Instagram stories or carousel posts.</p>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+  const counter = document.getElementById('counter');
+  let current = 0;
+
+  // Create dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function goToSlide(n) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    counter.textContent = `${current + 1} / ${slides.length}`;
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === slides.length - 1;
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < slides.length) goToSlide(next);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+  });
+
+  // Swipe support
+  let touchStartX = 0;
+  const carousel = document.getElementById('carousel');
+  carousel.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+  carousel.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+  });
+</script>
+
+</body>
+</html>
